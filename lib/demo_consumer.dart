@@ -9,7 +9,15 @@ class CounterPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Listen to the counter state provided by the ViewModel
-    final counter = ref.watch(counterViewModelProvider);
+    //final counter = ref.watch(counterViewModelProvider);
+
+    final counterState = ref.watch(
+      counterViewModelProvider,
+    ); // Watches the state
+    //final state = ref.watch(counterViewModelProvider); // Watching the state
+    final viewModel = ref.read(
+      counterViewModelProvider.notifier,
+    ); // Accessing ViewModel
 
     return Scaffold(
       appBar: AppBar(title: const Text('Riverpod Counter')),
@@ -19,7 +27,8 @@ class CounterPage extends ConsumerWidget {
           children: <Widget>[
             Text('Current counter value:', style: TextStyle(fontSize: 24)),
             Text(
-              '$counter',
+              //'$state.counter',
+              'Counter: ${counterState.counter}',
               style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
@@ -27,7 +36,8 @@ class CounterPage extends ConsumerWidget {
             ElevatedButton(
               onPressed: () {
                 // Access the ViewModel through the provider and call increment
-                ref.read(counterViewModelProvider.notifier).increment();
+                //ref.read(counterViewModelProvider.notifier).increment();
+                viewModel.increment();
               },
               child: const Text('Increment'),
             ),
@@ -35,8 +45,7 @@ class CounterPage extends ConsumerWidget {
             // Button to decrement the counter
             ElevatedButton(
               onPressed: () {
-                // Access the ViewModel through the provider and call decrement
-                ref.read(counterViewModelProvider.notifier).decrement();
+                viewModel.decrement();
               },
               child: const Text('Decrement'),
             ),
